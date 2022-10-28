@@ -3,4 +3,8 @@ class PostsController < ApplicationController
     @posts = Post.all
     @comments = Comment.all
   end
+
+  def show 
+    @post = Post.find(params[:id])
+  end
 end

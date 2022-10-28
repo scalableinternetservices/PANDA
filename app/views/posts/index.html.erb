@@ -1,20 +1,8 @@
 <h1>Posts</h1>
-
 <ul>
-    <% @posts.each do |post| %>
-        <h2><%= post.title%></h2>
-        <b>Tag: </b><%= post.tag.name%><br>
-        <b>Posted by:</b> <%= post.user.name%> at <%= post.created_at%>
-        <br>
-        <b>Content:</b>
-        <p><%= post.body%></p>
-        <br>
-        <b>Comments: </b>
-            <% @comments.each do |comment| %>
-                <% if comment.post_id == post.id %>
-                    <p><%= comment.body%></p>
-                    <p>Posted by: <%= comment.user.name%> at <%= comment.created_at%></p>
-                <% end %>
-            <% end %>    
-    <% end %>
+  <% @posts.each do |post| %>
+    <h2><%= link_to post.title, post%></h2>
+    <b>Tag: </b><%= post.tag.name%><br>
+    <b>Posted by:</b> <%= post.user.name%> at <%= post.created_at%><br>
+  <% end %>
 </ul>

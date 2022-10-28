@@ -1,0 +1,20 @@
+<h1>Title: <%= @post.title%></h1>
+<p> created by <%= @post.user.name%> at: <%= @post.created_at%>
+  <p>
+    <h2>Content:</h2>
+    <p >
+      <strong><%= @post.body%></strong>
+    </p>
+    <h3>Comments:</h3>
+    <% @post.comments.each do |comment| %>
+      <p>
+        <strong>commenter:</strong>
+        <%= comment.user.name %>
+        <strong> at </strong>
+        <%= comment.created_at %>
+      </p>
+      <p>
+        <strong>comment:</strong>
+        <%= comment.body %>
+      </p>
+    <% end %>

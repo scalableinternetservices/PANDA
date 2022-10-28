@@ -4,11 +4,13 @@ Rails.application.routes.draw do
   get '/logout', to: 'sessions#delete'
   
   root "posts#index"
+
   get 'site/home'
   # get '/posts', to:'posts#show'
   # get "/posts/:id", to: "posts#post"
 
   resources :users
+
   resources :posts do
     resources :comments
   end
