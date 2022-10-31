@@ -1,0 +1,9 @@
+<h1>Posts</h1>
+
+# <ul>
+#   <% @posts.each do |post| %>
+#     <h2><%= link_to post.title, post%></h2>
+#     <b>Tag: </b><%= post.tag.name%><br>
+#     <b>Posted by:</b> <%= post.user.name%> at <%= post.created_at%><br>
+#   <% end %>
+# </ul>
