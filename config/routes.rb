@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'site/index'
   root "posts#index"
 
   # get '/posts', to:'posts#show'
