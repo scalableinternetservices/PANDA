@@ -1,6 +1,11 @@
-<p style="color: green"><%= notice %></p>
+<p id="notice"><%= notice %></p>
 
-<%= render @user %>
+<h1><%= @user.name %></h1>
+
+<% @user.posts.each do |post| %>
+  <h2><%= link_to post.title, post %></h2>
+  <p><%= post.body.truncate(100) %></p>
+<% end %>
 
 <div>
   <%= link_to "Edit this user", edit_user_path(@user) %> |
