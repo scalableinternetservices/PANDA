@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h1><%= @user.name %></h1>
-
+<h1>Points: <%= @user.points%> </h1>
 <% @user.posts.each do |post| %>
   <h2><%= link_to post.title, post %></h2>
   <p><%= post.body.truncate(100) %></p>
