@@ -9,6 +9,10 @@
   background-image: url(./DarkCong.gif);
 }
 
+.container {
+  margin-top: 3vh;
+}
+
  #welcome-msg-nav {
   color: white;
   margin-right: 30px;
@@ -18,12 +22,6 @@
 
 a .nav-link {
   color: white;
-}
-
-.prompt-text {
-  font-size: 10vh;
-  color: white;
-  /* font-family: 'Brush Script MT', cursive; */
 }
 
 #next-icon {
@@ -65,6 +63,13 @@ a .nav-link {
   display: flex;
   padding: 5vh;
   flex-wrap: wrap;
+}
+
+.tag-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 #create_post {
