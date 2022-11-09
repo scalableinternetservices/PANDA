@@ -41,12 +41,12 @@
             </li>
           </ul>
 
-
           <% if logged_in? %>
-          <h1 id="welcome-msg-nav">Welcome <%=current_user.name %> </h1>
+            <h1 id="welcome-msg-nav">Welcome <%=current_user.name %> </h1>
             <a href="/logout" class="btn btn-outline-light" type="submit">Logout</a>
             <a href="/posts/new" class="btn btn-outline-light" type="submit">Create a new post</a>
           <% else %>
+            <h1 id="welcome-msg-nav">Login for more features</h1>
             <a href="/login" class="btn btn-outline-light" type="submit">Login</a>
             <a href="/users/new" class="btn btn-outline-light" type="submit">Signup</a>
           <% end %>
