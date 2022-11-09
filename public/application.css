@@ -81,8 +81,8 @@ a .nav-link {
 }
 
 .card {
+  min-width: 300px;
   margin: 3vh;
-  width: 20%;
 }
 
 /* Website header*/
