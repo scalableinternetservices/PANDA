@@ -10,7 +10,6 @@
     </svg>
   </div>
 </section> %>
-<section id="real-home">
   <section id="real-home-title">
     <h1 class="ml1">
       <span class="text-wrapper">
@@ -23,28 +22,26 @@
 
     </div>
   </section>
+
+<section id="login-function" class="container tag-container">
   <% if logged_in? %>
-    <a href="/tags/new" class="btn btn-primary">Add Your Own Tag</a>
+    <a href="/tags/new" class="btn btn-primary" style="margin-bottom: 10px;">Add Your Own Tag</a>
+    <a href="/posts/new" class="btn btn-primary">Make new Post</a>
   <% end %>
-  <section id="tag-cards">
-    <% @tags.each do |tag|%>
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">
-            # <%= tag.name %>
-          </h5>
-          <p class="card-text">
-            <%= tag.description %>
-          </p>
-            <a href="/tags/<%=tag.id%>" class="btn btn-primary">See the Post</a>
-        </div>
-      </div>
-    <% end %>
-  </section>
 </section>
 
-<section id = "create_post">
-<% if logged_in?%>
-  <a href="/posts/new" class="btn btn-primary">Make new Post</a>
-<% end %>
+<section id="tag-cards">
+  <% @tags.each do |tag|%>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">
+          # <%= tag.name %>
+        </h5>
+        <p class="card-text">
+          <%= tag.description %>
+        </p>
+          <a href="/tags/<%=tag.id%>" class="btn btn-primary">See the Post</a>
+      </div>
+    </div>
+  <% end %>
 </section>
