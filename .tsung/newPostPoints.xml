@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/Cellar/tsung/1.7.0/share/tsung/tsung-1.0.dtd">
+
+<tsung loglevel="notice" version="1.0">
+  <clients>
+    <client host="localhost" use_controller_vm="true"/>
+  </clients>
+
+  <servers>
+    <server host="localhost" port="3000" type="tcp"></server>
+  </servers>
+
+  <load>
+    <arrivalphase phase="1" duration="30" unit="second">
+      <users arrivalrate="50" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="2" duration="20" unit="second">
+      <users arrivalrate="80" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="3" duration="10" unit="second">
+      <users arrivalrate="100" unit="second"></users>
+    </arrivalphase>
+  </load>
+  <options>
+    <option name="file_server" id="userlist" value="/Users/zephyrz/291a/fp/PANDA/.tsung/user.csv" />
+  </options>
+  <sessions>
+    <session name="http-example" probability="100" type="ts_http">
+      <transaction name="LOG_IN">
+        <setdynvars sourcetype="file" fileid="userlist" delimiter="," order="iter">
+          <var name="name" />
+          <var name="password" />
+          <var name="email" />
+          <var name="points" />
+        </setdynvars>
+        <request>
+          <http url="/" method="GET" version="1.1"></http>
+        </request>
+        <!-- user click on login button to fill in form -->
+        <request> <http url="/login" method="GET" version="1.1"></http> </request>
+        <!-- user is filling login form -->
+        <thinktime value="3" random="true"></thinktime>
+        <request subst="true">
+          <dyn_variable name="user_id" re="[Ll]ocation: http://.*/users/(.*)\r" />
+          <http
+            url="/login"
+            contents='session[email]=%%_email%%&amp;session[password]=test'
+            method="POST"
+            version="1.1">
+          </http>
+        </request>
+      </transaction>
+
+      <transaction name="CREATE_POST">
+        <!-- see which tag interesting to post-->
+        <request>
+          <dyn_variable name="tag_id" re="[Ll]ocation: http://.*/tags/(.*)\r"></dyn_variable>
+          <http url="/tags" method="GET" version="1.1" />
+        </request>
+
+        <!-- go to the make new post page -->
+        <request>
+          <http url="/posts/new" method="GET" version="1.1" />
+        </request>
+
+        <!-- user is writing a post, it takes time -->
+        <thinktime value="20" random="true"></thinktime>
+
+        <!-- submitting the post -->
+        <setdynvars sourcetype="random_number" start="0" end="100">
+          <var name="randreadpoints"/>
+        </setdynvars>
+        <setdynvars sourcetype="random_string" length="50">
+          <var name="postbody"/>
+        </setdynvars>
+        <setdynvars sourcetype="random_string" length="20">
+          <var name="posttitle"/>
+        </setdynvars>
+        <request subst="true">
+          <match do="dump" when="nomatch">asldkf</match>
+          <http
+            url="/posts/new"
+            contents='title=%%_posttitle%%&amp;body=%%_postbody%%&amp;tag_id=%%_tag_id%%&amp;user_id=%%_user_id%%'
+            method="GET"
+            version="1.1">
+          </http>
+        </request>
+      </transaction>
+
+      <transaction name="VIEW_PROFILE">
+        <request subst="true">
+          <http url="/users/%%_user_id%%" method="GET" version="1.1" />
+        </request>
+      </transaction>
+    </session>
+  </sessions>
+</tsung>
