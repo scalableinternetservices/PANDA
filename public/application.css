@@ -9,7 +9,11 @@
   background-image: url(./DarkCong.gif);
 }
 
-#welcome-msg-nav {
+.container {
+  margin-top: 3vh;
+}
+
+ #welcome-msg-nav {
   color: white;
   margin-right: 30px;
   margin-top: 5px;
@@ -18,12 +22,6 @@
 
 a .nav-link {
   color: white;
-}
-
-.prompt-text {
-  font-size: 10vh;
-  color: white;
-  /* font-family: 'Brush Script MT', cursive; */
 }
 
 #next-icon {
@@ -67,6 +65,13 @@ a .nav-link {
   flex-wrap: wrap;
 }
 
+.tag-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 #create_post {
   display: flex;
   flex-direction: column;
@@ -76,8 +81,8 @@ a .nav-link {
 }
 
 .card {
+  min-width: 300px;
   margin: 3vh;
-  width: 20%;
 }
 
 /* Website header*/

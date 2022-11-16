@@ -1,15 +1,27 @@
-<p id="notice"><%= notice %></p>
 
-<h1><%= @user.name %></h1>
-
-<% @user.posts.each do |post| %>
-  <h2><%= link_to post.title, post %></h2>
-  <p><%= post.body.truncate(100) %></p>
+<% if notice %>
+  <div class="alert alert-success" role="alert">
+    <p id="notice"><%= notice %></p>
+  </div>
 <% end %>
 
-<div>
-  <%= link_to "Edit this user", edit_user_path(@user) %> |
-  <%= link_to "Back to users", users_path %>
+<div class="container">
+  <h1><%= @user.name %></h1>
+  <h3>Points: <%= @user.points%> </h3>
+  <% if @user.posts %>
+    <% @user.posts.each do |post| %>
+      <h2><%= link_to post.title, post %></h2>
+      <p><%= post.body.truncate(100) %></p>
+    <% end %>
+  <% else %>
+    <div>You haven't got any post yet</div>
+  <% end %>
 
-  <%= button_to "Destroy this user", @user, method: :delete %>
+  <div>
+    <%= link_to "Edit this user", edit_user_path(@user) %> |
+    <%= link_to "Back to users", users_path %>
+
+    <%= button_to "Destroy this user", @user, method: :delete %>
+  </div>
 </div>
+
