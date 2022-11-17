@@ -73,7 +73,7 @@
         <!-- <thinktime value="20" random="true"></thinktime> -->
 
         <!-- submitting the post -->
-        <setdynvars sourcetype="random_number" start="1" end="3">
+        <setdynvars sourcetype="random_number" start="1" end="10">
           <var name="randtagid"/>
         </setdynvars>
         <setdynvars sourcetype="random_number" start="0" end="100">
@@ -86,10 +86,10 @@
           <var name="posttitle"/>
         </setdynvars>
         <request subst="true">
-          <dyn_variable name="postquest" re="(.*)"/>
+          <dyn_variable name="poststatus" re="(.*)"/>
           <http
             url="/posts"
-            contents='authenticity_token=%%_authenticity_token%%&amp;post[points2view]=%%randreadpoints%%&amp;post[title]=%%_posttitle%%&amp;post[body]=%%_postbody%%&amp;post[tag_id]=%%_randtagid%%'
+            contents='authenticity_token=%%_authenticity_token%%&amp;post[points2view]=%%_randreadpoints%%&amp;post[title]=%%_posttitle%%&amp;post[body]=%%_postbody%%&amp;post[tag_id]=%%_randtagid%%&amp;post[user_id]=%%_userid%%'
             method="POST"
             version="1.1">
           </http>
@@ -98,14 +98,15 @@
 
       <transaction name="VIEW_PROFILE">
         <request subst="true">
-          <http url="/users/%%_user_id%%" method="GET" version="1.1" />
+          <dyn_variable name="profilestatus" re="(.*)"/>
+          <http url="/users/%%_userid%%" method="GET" version="1.1" />
         </request>
       </transaction>
 
-      <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
+      <!-- <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
       io:format([126, $p, 126, $n, 126, $n], [DynVars]),
       ok end.">
-      </setdynvars>
+      </setdynvars> -->
     </session>
   </sessions>
 </tsung>
