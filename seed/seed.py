@@ -27,8 +27,8 @@ def add_tag(url):
         print('add tag' + str(i) + ': ' + str(x.status_code))
 
 def add_post(url):
-    for i in range(100):
-        tag_id = random.randint(0, 9)
+    for i in range(1, 100):
+        tag_id = random.randint(1, 10)
         myobj = {'post[title]': "test comment title" + str(i),
                 'post[body]': 'test for sample post',
                 'post[points2view]': 10,
@@ -39,8 +39,8 @@ def add_post(url):
         print('add post' + str(i) + ': ' + str(x.status_code))
 
 def add_comment(url):
-    for i in range(100):
-        user_id = random.randint(0, 99)
+    for i in range(1, 100):
+        user_id = random.randint(1, 100)
         myobj = {
                 'comment[body]': 'test comment body' + str(i),
                 'comment[user_id]' : user_id,
