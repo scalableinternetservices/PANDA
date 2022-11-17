@@ -17,19 +17,36 @@ class TagsController < ApplicationController
 
   def create
     @tag = Tag.new(name: params[:name], description: params[:description])
-    @currentuser = current_user()
-    @prevpoint = @currentuser.points.clone
-    if @tag.save
-      @point_added =  User.update(@current_user.id, :points => @current_user.points + 10)
-      if @point_added
-        @currentpoint = User.find(@current_user.id).points
-        notice = "Thanks for creating tag. Your points successfully added:" + @prevpoint.to_s + "=>" + @currentpoint.to_s
-        redirect_to user_path(@current_user.id), notice: notice
+    if !current_user
+      @currentuser = User.find(params[:user_id])
+      @prevpoint = @currentuser.points.clone
+      if @tag.save
+        @point_added =  User.update(params[:user_id], :points => @currentuser.points + 10)
+        if @point_added
+          @currentpoint = User.find(@currentuser.id).points
+          notice = "Thanks for creating tag. Your points successfully added:" + @prevpoint.to_s + "=>" + @currentpoint.to_s
+          redirect_to user_path(@currentuser.id), notice: notice
+        else
+          render :new, status: :unprocessable_entity
+        end
       else
         render :new, status: :unprocessable_entity
       end
     else
-      render :new, status: :unprocessable_entity
+      @currentuser = current_user()
+      @prevpoint = @currentuser.points.clone
+      if @tag.save
+        @point_added =  User.update(@current_user.id, :points => @current_user.points + 10)
+        if @point_added
+          @currentpoint = User.find(@current_user.id).points
+          notice = "Thanks for creating tag. Your points successfully added:" + @prevpoint.to_s + "=>" + @currentpoint.to_s
+          redirect_to user_path(@current_user.id), notice: notice
+        else
+          render :new, status: :unprocessable_entity
+        end
+      else
+        render :new, status: :unprocessable_entity
+      end
     end
   end
 end
