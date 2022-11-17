@@ -121,5 +121,16 @@ replace [~/graphs] with the location of graph file of previous step
 scp -r -i PANDA.pem PANDA@ec2.cs291.com:[~/graphs] .
 ```
 
+### feed database
+#### optional
+```
+docker-compose run web rake db:drop db:create db:migrate
+```
+run:
+```
+cd seed
+pip3 install requests
+python3 seed.py
+```
 
 

@@ -2,14 +2,13 @@
     <div class="danger">
       <%= flash[:danger] %>
     </div>
-  
+
     <div class="actions">
-      <%= form.label :email %> 
-      <%= form.email_field :email %> 
-  
+      <%= form.label :email %>
+      <%= form.email_field :email %>
+
       <%= form.label :password %>
       <%= form.password_field :password %>
-  
       <%= form.submit "Log in"%>
     </div>
 <% end %>
