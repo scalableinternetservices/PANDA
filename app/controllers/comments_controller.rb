@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   skip_before_action :verify_authenticity_token
     # GET /comments or /comments.json
+    skip_before_action :verify_authenticity_token
     def index
       @comments = Comment.all
     end
@@ -17,8 +18,14 @@ class CommentsController < ApplicationController
 
   def create
     @post = Post.find(params[:post_id])
+    # puts "alsdjgafldkjhg"
+    # puts params
     @comment = @post.comments.create(comment_params)
-    @comment.user_id = current_user.id
+    if current_user
+      @comment.user_id = current_user.id
+    else
+      @comment.user_id = params[:comment][:user_id]
+    end
     # @comment = Comment.new(comment_params)
 
     if @comment.save
