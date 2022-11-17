@@ -1,4 +1,5 @@
 import requests
+import random
 
 local_url = 'http://localhost:3000'
 aws_url = 'http://zephyrz.eba-gaci4fx8.us-west-2.elasticbeanstalk.com'
@@ -13,16 +14,39 @@ def add_user(url):
                 'commit': 'Create User'}
 
         x = requests.post(url + '/users', data = myobj)
-        print(x.status_code)
+        print('add user' + str(i) + ': ' + str(x.status_code))
 
 def add_tag(url):
     for i in range(10):
         name = open("location.txt", "r").readlines()[i]
         myobj = {'name': name,
-                'description': 'test'
+                'description': 'test',
+                'user_id': random.randint(0, 99),
                 }
         x = requests.post(url + '/tags', data = myobj)
-        print(x.status_code)
+        print('add tag' + str(i) + ': ' + str(x.status_code))
+
+def add_post(url):
+    for i in range(100):
+        tag_id = random.randint(0, 9)
+        myobj = {'post[title]': "test comment title" + str(i),
+                'post[body]': 'test for sample post',
+                'post[points2view]': 10,
+                'post[tag_id]' : tag_id,
+                'post[user_id]' : i,
+        }
+        x = requests.post(url + '/posts', data = myobj)
+        print('add post' + str(i) + ': ' + str(x.status_code))
+
+def add_comment(url):
+    for i in range(100):
+        user_id = random.randint(0, 99)
+        myobj = {
+                'comment[body]': 'test comment body' + str(i),
+                'comment[user_id]' : user_id,
+        }
+        x = requests.post(url + '/posts/' + str(i) + '/comments', data = myobj)
+        print('add comment' + str(i) + ': ' + str(x.status_code))
 
 #choose which server to seed(local or aws)
 my_url = local_url
@@ -30,5 +54,7 @@ my_url = local_url
 #chosse which data to see. comment out if you don't want to seed
 add_user(my_url)
 add_tag(my_url)
+add_post(my_url)
+add_comment(my_url)
 
 print('exit')
