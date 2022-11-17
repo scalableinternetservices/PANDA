@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-    # GET /comments or /comments.json
-    skip_before_action :verify_authenticity_token
+  # skip_before_action :verify_authenticity_token
+  #   # GET /comments or /comments.json
+  #   skip_before_action :verify_authenticity_token
     def index
       @comments = Comment.all
     end
