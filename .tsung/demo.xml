@@ -7,7 +7,7 @@
   </clients>
 
   <servers>
-    <server host="localhost" port="3000" type="tcp"></server>
+    <server host="panda.eba-gaci4fx8.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
   </servers>
 
   <load>

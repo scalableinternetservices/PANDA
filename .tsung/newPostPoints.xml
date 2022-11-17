@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE tsung SYSTEM "/usr/local/Cellar/tsung/1.7.0/share/tsung/tsung-1.0.dtd">
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd">
 
 <tsung loglevel="notice" version="1.0">
   <clients>
-    <client host="localhost" use_controller_vm="true"/>
+    <client host="localhost" use_controller_vm="true" maxusers="18000"/>
   </clients>
+<!--
+  <servers>
+    <server host="panda.eba-gaci4fx8.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
+  </servers> -->
 
   <servers>
     <server host="localhost" port="3000" type="tcp"></server>
   </servers>
 
+
   <load>
-    <arrivalphase phase="1" duration="30" unit="second">
-      <users arrivalrate="50" unit="second"></users>
+    <arrivalphase phase="1" duration="3" unit="second">
+      <users arrivalrate="1" unit="second"></users>
     </arrivalphase>
-    <arrivalphase phase="2" duration="20" unit="second">
-      <users arrivalrate="80" unit="second"></users>
+    <!-- <arrivalphase phase="2" duration="3" unit="second">
+      <users arrivalrate="1" unit="second"></users>
     </arrivalphase>
-    <arrivalphase phase="3" duration="10" unit="second">
-      <users arrivalrate="100" unit="second"></users>
-    </arrivalphase>
+    <arrivalphase phase="3" duration="3" unit="second">
+      <users arrivalrate="1" unit="second"></users>
+    </arrivalphase> -->
   </load>
   <options>
     <option name="file_server" id="userlist" value="/Users/zephyrz/291a/fp/PANDA/.tsung/user.csv" />
@@ -34,6 +39,7 @@
           <var name="points" />
         </setdynvars>
         <request>
+          <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"></dyn_variable>
           <http url="/" method="GET" version="1.1"></http>
         </request>
         <!-- user click on login button to fill in form -->
@@ -41,10 +47,11 @@
         <!-- user is filling login form -->
         <thinktime value="3" random="true"></thinktime>
         <request subst="true">
-          <dyn_variable name="user_id" re="[Ll]ocation: http://.*/users/(.*)\r" />
+          <dyn_variable name="loginstatus" re="(.*)"/>
+          <dyn_variable name="userid" re="Location: http://.*/users/(.*)\r" />
           <http
             url="/login"
-            contents='session[email]=%%_email%%&amp;session[password]=test'
+            contents='authenticity_token=%%_authenticity_token%%&amp;session[email]=%%_email%%&amp;session[password]=test'
             method="POST"
             version="1.1">
           </http>
@@ -54,7 +61,6 @@
       <transaction name="CREATE_POST">
         <!-- see which tag interesting to post-->
         <request>
-          <dyn_variable name="tag_id" re="[Ll]ocation: http://.*/tags/(.*)\r"></dyn_variable>
           <http url="/tags" method="GET" version="1.1" />
         </request>
 
@@ -64,9 +70,12 @@
         </request>
 
         <!-- user is writing a post, it takes time -->
-        <thinktime value="20" random="true"></thinktime>
+        <!-- <thinktime value="20" random="true"></thinktime> -->
 
         <!-- submitting the post -->
+        <setdynvars sourcetype="random_number" start="1" end="4">
+          <var name="randtagid"/>
+        </setdynvars>
         <setdynvars sourcetype="random_number" start="0" end="100">
           <var name="randreadpoints"/>
         </setdynvars>
@@ -77,10 +86,10 @@
           <var name="posttitle"/>
         </setdynvars>
         <request subst="true">
-          <match do="dump" when="nomatch">asldkf</match>
+          <dyn_variable name="postquest" re="(.*)"/>
           <http
             url="/posts/new"
-            contents='title=%%_posttitle%%&amp;body=%%_postbody%%&amp;tag_id=%%_tag_id%%&amp;user_id=%%_user_id%%'
+            contents='authenticity_token=%%_authenticity_token%%&amp;title=%%_posttitle%%&amp;body=%%_postbody%%&amp;tag_id=%%_randtagid%%&amp;user_id=%%_userid%%'
             method="GET"
             version="1.1">
           </http>
@@ -92,6 +101,11 @@
           <http url="/users/%%_user_id%%" method="GET" version="1.1" />
         </request>
       </transaction>
+
+      <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
+      io:format([126, $p, 126, $n, 126, $n], [DynVars]),
+      ok end.">
+      </setdynvars>
     </session>
   </sessions>
 </tsung>
