@@ -73,7 +73,7 @@
         <!-- <thinktime value="20" random="true"></thinktime> -->
 
         <!-- submitting the post -->
-        <setdynvars sourcetype="random_number" start="1" end="4">
+        <setdynvars sourcetype="random_number" start="1" end="3">
           <var name="randtagid"/>
         </setdynvars>
         <setdynvars sourcetype="random_number" start="0" end="100">
@@ -88,9 +88,9 @@
         <request subst="true">
           <dyn_variable name="postquest" re="(.*)"/>
           <http
-            url="/posts/new"
-            contents='authenticity_token=%%_authenticity_token%%&amp;title=%%_posttitle%%&amp;body=%%_postbody%%&amp;tag_id=%%_randtagid%%&amp;user_id=%%_userid%%'
-            method="GET"
+            url="/posts"
+            contents='authenticity_token=%%_authenticity_token%%&amp;post[points2view]=%%randreadpoints%%&amp;post[title]=%%_posttitle%%&amp;post[body]=%%_postbody%%&amp;post[tag_id]=%%_randtagid%%'
+            method="POST"
             version="1.1">
           </http>
         </request>
