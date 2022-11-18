@@ -26,18 +26,12 @@
       <users arrivalrate="1" unit="second"></users>
     </arrivalphase> -->
   </load>
-  <options>
-    <option name="file_server" id="userlist" value="/Users/zephyrz/291a/fp/PANDA/.tsung/user.csv" />
-  </options>
   <sessions>
     <session name="http-example" probability="100" type="ts_http">
+      <setdynvars sourcetype="random_number" start="1" end="98">
+        <var name="randuserid"/>
+      </setdynvars>
       <transaction name="LOG_IN">
-        <setdynvars sourcetype="file" fileid="userlist" delimiter="," order="iter">
-          <var name="name" />
-          <var name="password" />
-          <var name="email" />
-          <var name="points" />
-        </setdynvars>
         <request>
           <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"></dyn_variable>
           <http url="/" method="GET" version="1.1"></http>
@@ -51,7 +45,7 @@
           <dyn_variable name="userid" re="Location: http://.*/users/(.*)\r" />
           <http
             url="/login"
-            contents='authenticity_token=%%_authenticity_token%%&amp;session[email]=%%_email%%&amp;session[password]=test'
+            contents='authenticity_token=%%_authenticity_token%%&amp;session[email]=%%_randuserid%%user@hotmail.com&amp;session[password]=test'
             method="POST"
             version="1.1">
           </http>
@@ -103,10 +97,10 @@
         </request>
       </transaction>
 
-      <!-- <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
+      <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
       io:format([126, $p, 126, $n, 126, $n], [DynVars]),
       ok end.">
-      </setdynvars> -->
+      </setdynvars>
     </session>
   </sessions>
 </tsung>
