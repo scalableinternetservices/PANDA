@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd" [] >
+<!-- <!DOCTYPE tsung SYSTEM "/Users/wangzeyu/Desktop/CS291Aprojects/primary/tsung/tsung-1.0.dtd"> -->
+<tsung loglevel="info">	
+<clients>
+  <client host="localhost" use_controller_vm="true"/>
+</clients>
+
+<servers>
+  <server host="panda.eba-gaci4fx8.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
+  <!-- <server host="localhost" port="3000" type="tcp"></server> -->
+</servers>
+
+<load>
+    <arrivalphase phase="1" duration="30" unit="second">
+      <users arrivalrate="2" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="2" duration="30" unit="second">
+      <users arrivalrate="1" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="3" duration="30" unit="second">
+      <users arrivalrate="0.5" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="4" duration="30" unit="second">
+      <users arrivalrate="0.2" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="5" duration="30" unit="second">
+      <users arrivalrate="0.1" unit="second"></users>
+    </arrivalphase>
+</load>
+
+  <options>
+    <!-- Set connection timeout to 10 seconds -->
+    <option name="global_ack_timeout" value="10000"></option>
+    <!-- <option name="file_server" id="userlist" value="/Users/wangzeyu/Desktop/CS291Aprojects/primary/PANDA/.tsung/user.csv" /> -->
+     <option name="file_server" id="userlist" value="user.csv"/>
+  </options>
+
+    <sessions>
+    <session name='example' probability='100'  type='ts_http'>
+    <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
+        io:format([126, $p, 126, $n, 126, $n], [DynVars]),
+        ok end.">
+        <var name="dump" />
+      </setdynvars>
+      <transaction name="LOG_IN">
+        <setdynvars sourcetype="file" fileid="userlist" delimiter="," order="iter">
+          <var name="name" />
+          <var name="password" />
+          <var name="email" />
+          <var name="points" />
+        </setdynvars>
+        <request>
+          <dyn_variable name="authenticity_token" xpath="/html/head/meta[@name='csrf-token']/@content"></dyn_variable>
+          <http url="/" method="GET" version="1.1"></http>
+        </request>
+        <!-- user click on login button to fill in form -->
+        <request> <http url="/login" method="GET" version="1.1"></http> </request>
+        <request subst="true">
+          <dyn_variable name="loginstatus" re="(.*)"/>
+          <dyn_variable name="userid" re="Location: http://.*/users/(.*)\r" />
+          <http
+            url="/login"
+            contents='authenticity_token=%%_authenticity_token%%&amp;session[email]=%%_email%%&amp;session[password]=test'
+            method="POST"
+            version="1.1">
+          </http>
+        </request>
+      </transaction>
+
+     <setdynvars sourcetype="random_number" start="1" end="99">
+     <var name="rndPid" />
+     </setdynvars>
+
+      <setdynvars sourcetype="random_number" start="1" end="9">
+     <var name="rndTid" />
+     </setdynvars>
+
+    <transaction name = "VIEW_TAG">
+    <request subst="true">
+    <http url="/tags/%%_rndTid%%" method="GET" version="1.1" />
+    </request>
+    </transaction>
+
+    <transaction name = "VIEW_POST">
+    <request subst = "true">
+    <http url="/posts/%%_rndPid%%" method="GET" version="1.1" />
+    </request>
+    </transaction>
+
+    <transaction name = "BACK_TO_HOME_PAGE">
+    <request> <http url="/" method="GET" version="1.1"></http> </request>
+    </transaction>
+
+    <transaction name = "VIEW_ANOTHER_TAG">
+    <request subst="true">
+    <http url="/tags/%%_rndTid%%" method="GET" version="1.1" />
+    </request>
+    </transaction>
+    </session>
+  </sessions>
+</tsung>
