@@ -7,20 +7,33 @@
   </clients>
 
   <servers>
-    <server host="localhost" port="3000" type="tcp"></server>
+    <server host="panda.eba-gaci4fx8.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
   </servers>
 
   <load>
     <arrivalphase phase="1" duration="30" unit="second">
       <users arrivalrate="1" unit="second"></users>
     </arrivalphase>
-    <!-- <arrivalphase phase="2" duration="60" unit="second">
+    <arrivalphase phase="2" duration="30" unit="second">
       <users arrivalrate="2" unit="second"></users>
-    </arrivalphase> -->
+    </arrivalphase>
+    <arrivalphase phase="3" duration="30" unit="second">
+      <users arrivalrate="8" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="4" duration="30" unit="second">
+      <users arrivalrate="16" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="5" duration="30" unit="second">
+      <users arrivalrate="32" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="6" duration="30" unit="second">
+      <users arrivalrate="64" unit="second"></users>
+    </arrivalphase>
   </load>
 
   <options>
     <option name="file_server" id="userlist" value="/Users/brandon/Desktop/291a/PANDA/.tsung/user.csv" />
+    <!-- <option name="file_server" id="userlist" value="/home/ec2-user/user.csv" /> -->
   </options>
 
   <sessions>
@@ -52,16 +65,33 @@
         </request>
       </transaction>
 
-      <!-- <transaction name="VIEW_POST">
-        <request>
-          <dyn_variable name="tag_id" re="[Ll]ocation: http://.*/tags/(.*)\r"></dyn_variable>
-          <http url="/tags" method="GET" version="1.1" />
+      <transaction name="VIEW_POST">
+        <setdynvars sourcetype="random_number" start="1" end="100">
+          <var name="randpostid"/>
+        </setdynvars>
+        <request subst='true'>
+          <http url="/posts/%%_randpostid%%" method="GET" version="1.1" />
         </request>
 
-        <request subst="true">\
-            <http url="/posts/%%_post_id%%" method="GET" version="1.1" />
+        <setdynvars sourcetype="random_string" length="20">
+          <var name="commentbody"/>
+        </setdynvars>
+        <request subst="true">
+          <dyn_variable name="postquest" re="(.*)"/>
+          <dyn_variable name="postid2" re="Location: http://.*/posts/(.*)\r" />
+          <http
+            url="/posts/%%_randpostid%%/comments"
+            contents='authenticity_token=%%_authenticity_token%%&amp;comment[body]=%%_commentbody%%&amp;comment[user_id]=%%_userid%%&amp;comment[post_id]=%%_randpostid%%'
+            method="POST"
+            version="1.1">
+          </http>
         </request>
-      </transaction> -->
+      </transaction>
+
+      <setdynvars sourcetype="eval" code="fun( {Pid, DynVars} ) ->
+      io:format([126, $p, 126, $n, 126, $n], [DynVars]),
+      ok end.">
+      </setdynvars>
 
     </session>
   </sessions>
