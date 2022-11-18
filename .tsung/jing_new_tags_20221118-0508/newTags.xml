@@ -8,10 +8,10 @@
     </servers>
 
     <load>
-    <arrivalphase phase="1" duration="30" unit="second"><users arrivalrate="1" unit="second"/></arrivalphase>
+        <arrivalphase phase="1" duration="30" unit="second"><users arrivalrate="1" unit="second"/></arrivalphase>
         <arrivalphase phase="2" duration="30" unit="second"><users arrivalrate="2" unit="second"/></arrivalphase>
         <arrivalphase phase="3" duration="30" unit="second"><users arrivalrate="4" unit="second"/></arrivalphase>
-   </load>
+    </load>
 
     <options>
         <option name="file_server" id="userlist" value="user.csv"/>
@@ -45,29 +45,29 @@
                     <http url="/tags/new" method="GET" version="1.1"/>
                 </request>
 
-                <setdynvars sourcetype="random_string" length="50">
-                    <var name="tagname"/>
+                <setdynvars sourcetype="random_string" length="10">
+                    <var name="name"/>
                 </setdynvars>
-                <setdynvars sourcetype="random_string" length="20">
-                    <var name="tagdescription"/>
+                <setdynvars sourcetype="random_string" length="30">
+                    <var name="description"/>
                 </setdynvars>
 
                 <request subst="true">
                     <dyn_variable name="postquest" re="(.*)"/>
-                    <http url="/tags" contents="authenticity_token=%%_authenticity_token%%&amp;tag[name]=%%tagname%%&amp;tag[description]=%%tagdescription%%" method="POST" version="1.1">
+                    <http url="/tags" contents="authenticity_token=%%_authenticity_token%%&amp;name=%%_name%%&amp;description=%%_description%%" method="POST" version="1.1">
                     </http>
-                </request>
-            </transaction>
-
-            <transaction name="VIEW_TAG">
-                <request subst="true">
-                    <http url="/tags" method="GET" version="1.1"/>
                 </request>
             </transaction>
 
             <transaction name="VIEW_Profile">
                 <request subst="true">
                     <http url="/users/%%_userid%%" method="GET" version="1.1"/>
+                </request>
+            </transaction>
+
+            <transaction name="VIEW_TAG">
+                <request subst="true">
+                    <http url="/" method="GET" version="1.1"/>
                 </request>
             </transaction>
 

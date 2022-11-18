@@ -61,32 +61,32 @@
                 <!-- <thinktime value="20" random="true"></thinktime> -->
 
                 <!-- submitting the tag -->
-                <setdynvars sourcetype="random_string" length="50">
-                    <var name="tagname" />
+                <setdynvars sourcetype="random_string" length="10">
+                    <var name="name" />
                 </setdynvars>
-                <setdynvars sourcetype="random_string" length="20">
-                    <var name="tagdescription" />
+                <setdynvars sourcetype="random_string" length="30">
+                    <var name="description" />
                 </setdynvars>
 
                 <request subst="true">
                     <dyn_variable name="postquest" re="(.*)" />
                     <!-- <match do="dump" when="nomatch">asldkf</match> -->
                     <http url="/tags"
-                        contents='authenticity_token=%%_authenticity_token%%&amp;tag[name]=%%tagname%%&amp;tag[description]=%%tagdescription%%'
+                        contents='authenticity_token=%%_authenticity_token%%&amp;name=%%_name%%&amp;description=%%_description%%'
                         method="POST" version="1.1">
                     </http>
-                </request>
-            </transaction>
-
-            <transaction name="VIEW_TAG">
-                <request subst="true">
-                    <http url="/tags" method="GET" version="1.1" />
                 </request>
             </transaction>
 
             <transaction name="VIEW_Profile">
                 <request subst="true">
                     <http url="/users/%%_userid%%" method="GET" version="1.1" />
+                </request>
+            </transaction>
+
+            <transaction name="VIEW_TAG">
+                <request subst="true">
+                    <http url="/" method="GET" version="1.1" />
                 </request>
             </transaction>
 
