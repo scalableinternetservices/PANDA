@@ -2,19 +2,6 @@ class CommentsController < ApplicationController
   # skip_before_action :verify_authenticity_token
   #   # GET /comments or /comments.json
   #   skip_before_action :verify_authenticity_token
-    def index
-      @comments = Comment.all
-    end
-
-     # GET /comments/1 or /comments/1.json
-  def show
-    @comment = Comment.find(params[:id])
-  end
-
-  # GET /comments/new
-  def new
-    @comment = Comment.new
-  end
 
   def create
     @post = Post.find(params[:post_id])
