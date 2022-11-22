@@ -1,9 +1,10 @@
 class PostsController < ApplicationController
   skip_before_action :verify_authenticity_token
   def index
-    puts Post.all
-    @posts = Post.all.includes(:user, :tag)
-    @comments = Comment.all
+    # puts Post.all
+    # @posts = Post.all.includes(:user, :tag)
+    # @comments = Comment.all
+    @posts = Post.all.includes(:user, :tag).page params[:page]
   end
 
   def show

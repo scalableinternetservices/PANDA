@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :users
   
   resources :posts do
+    get '/page/:page', action: :index, on: :collection
     resources :comments
   end
 end

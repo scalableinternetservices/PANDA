@@ -1,4 +1,5 @@
 class Post < ApplicationRecord
+  paginates_per 25
   belongs_to :user
   belongs_to :tag
   has_many :comments

@@ -11,4 +11,5 @@
       <b>Posted by:</b> <%= post.user.name%> at <%= post.created_at%><br> 
   <% end%>
   <% end %>
+  <%= paginate @posts %>
 </ul>
