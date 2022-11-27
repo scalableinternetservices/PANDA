@@ -19,4 +19,7 @@ Rails.application.routes.draw do
     get '/page/:page', action: :index, on: :collection
     resources :comments
   end
+  resources :tags do
+    get 'tag/:page', action: :index, on: :collection
+  end
 end

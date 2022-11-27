@@ -1,7 +1,7 @@
 class TagsController < ApplicationController
   skip_before_action :verify_authenticity_token
   def index
-    @tags = Tag.all
+    @tags = Tag.page params[:page]
   end
 
   def show
