@@ -30,6 +30,10 @@
   <% end %>
 </section>
 
+<section id="pagination">
+  <%= paginate @tags %>
+</section>
+
 <section id="tag-cards">
   <% @tags.each do |tag|%>
     <div class="card">
@@ -44,5 +48,5 @@
       </div>
     </div>
   <% end %>
-  <%= paginate @tags %>
+
 </section>

@@ -13,3 +13,31 @@
  *= require_tree .
  *= require_self
  */
+
+
+#pagination {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-right: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+ }
+
+ #tag-cards {
+  width: 100%;
+  display: flex;
+  padding-left: 5vh;
+  padding-right: 5vh;
+  padding-bottom: 0vh;
+  padding-top: 0vh;
+  flex-wrap: wrap;
+}
+
+.first, .prev, .page, .next, .last {
+  margin: 10px;
+}
+
+
+

@@ -9,6 +9,15 @@
   background-image: url(./DarkCong.gif);
 }
 
+#pagination {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-right: 10px;
+  justify-content: center;
+  align-items: center;
+ }
+
 .container {
   margin-top: 3vh;
 }
@@ -61,7 +70,9 @@ a .nav-link {
 #tag-cards {
   width: 100%;
   display: flex;
-  padding: 5vh;
+  padding-left: 5vh;
+  padding-right: 5vh;
+  padding-bottom: 0vh;
   flex-wrap: wrap;
 }
 
